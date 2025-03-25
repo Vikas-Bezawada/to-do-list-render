@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Task Tracker</h1>
+        <form action="{{ url_for('add_task') }}" method="POST">
+            <input type="text" name="task" placeholder="Add a new task..." required>
+            <button type="submit">Add Task</button>
+        </form>
+        <ul class="task-list">
+            {% for task in tasks %}
+            <li>
+                <!-- <input type="checkbox" {% if task[2] %}checked{% endif %} onclick="location.href='{{ url_for('complete_task', task_id=task[0]) }}'"> -->
+                {% set complete_url = url_for('complete_task', task_id=task[0]) %}
+                <input type="checkbox" {% if task[2] %}checked{% endif %} onclick="location.href='{{ complete_url }}'">
+                
+                <label class="task-label {% if task[2] %}completed{% endif %}">{{ task[1] }}</label>
+                <a href="{{ url_for('delete_task', task_id=task[0]) }}" class="delete-btn">X</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
